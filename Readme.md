@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Konstantin Romaneev](https://up.htmlacademy.ru/javascript/18/user/822905).
-* Наставник: `Неизвестно`.
+* Наставник: [Гоша Егорян] (https://up.htmlacademy.ru/javascript/18/user/85633).
 
 ---
 
