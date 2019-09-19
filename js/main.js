@@ -13,7 +13,7 @@ var randomNumber = function (min, max) {
 };
 
 var getFeatures = function () {
-  var count = randomNumber(0, features.length);
+  var count = randomNumber(0, features.length - 1);
   for (var i = 0; i < count; i++) {
     newFetures[i] = features[i];
   }
@@ -69,7 +69,7 @@ var renderElement = function (array) {
 
   for (var i = 0; i < array.length; i++) {
     var element = template.cloneNode(true);
-    var img = element.firstChild;
+    var img = element.querySelector('img');
     element.setAttribute('style', 'left: ' + array[i].location.x + 'px; top: ' + array[i].location.y + 'px;');
     img.setAttribute('src', array[i].autor.avatar);
     img.setAttribute('alt', array[i].offer.title);
