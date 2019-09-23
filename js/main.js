@@ -30,16 +30,17 @@ var getPhotos = function (min, max) {
 };
 
 var translateType = function (type) {
-  if (type === 'palace') {
-    return 'Дворец';
-  } else if (type === 'flat') {
-    return 'Квартира';
-  } else if (type === 'house') {
-    return 'Дом';
-  } else if (type === 'bungalo') {
-    return 'Бунгало';
-  } else {
-    return 'Не известный тип жилья';
+  switch (type) {
+    case 'palace':
+      return 'Дворец';
+    case 'flat':
+      return 'Квартира';
+    case 'house':
+      return 'Дом';
+    case 'bungalo':
+      return 'Бунгало';
+    default:
+      return 'Не известный тип жилья';
   }
 };
 
