@@ -89,7 +89,7 @@ var createArray = function (quantity) {
 createArray(8);
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+// map.classList.remove('map--faded');
 
 var mapPins = document.querySelector('.map__pins');
 
@@ -140,6 +140,141 @@ var renderCard = function (array) {
   mapPins.appendChild(fragment);
 };
 
-renderElement(arr);
-renderCard(arr);
+// renderElement(arr);
+// renderCard(arr);
+
+// отключаем инпуты и селекторы и проверяем классы
+
+if (!map.classList.contains('map--faded')) {
+  map.classList.add('map--faded');
+}
+
+var adForm = document.querySelector('.ad-form');
+var mapFilters = document.querySelector('.map__filters');
+var fieldsetAdForm = adForm.querySelectorAll('fieldset');
+// var selectsAdForm = adForm.querySelectorAll('select');
+var inputsMapFilters = mapFilters.querySelectorAll('input');
+var selectsMapFilters = mapFilters.querySelectorAll('select');
+var addressInp = adForm.querySelector('#address');
+var mapPin = document.querySelector('.map__pin--main');
+var PIN_WIDTH = mapPin.offsetWidth / 2;
+var PIN_HEIGHT = mapPin.offsetHeight / 2;
+
+// вставляем в инпут координаты точки
+addressInp.value = (mapPins.offsetWidth / 2 + PIN_WIDTH) + ' ' + (mapPins.offsetHeight / 2 + PIN_HEIGHT);
+
+if (!adForm.classList.contains('ad-form--disabled')) {
+  adForm.classList.add('ad-form--disabled');
+}
+
+var setAttr = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].setAttribute('disabled', 'disabled');
+  }
+};
+
+var delAttr = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].removeAttribute('disabled');
+  }
+};
+
+
+setAttr(fieldsetAdForm);
+setAttr(inputsMapFilters);
+setAttr(selectsMapFilters);
+
+var activateForms = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  delAttr(fieldsetAdForm);
+  delAttr(inputsMapFilters);
+  delAttr(selectsMapFilters);
+};
+
+mapPin.addEventListener('mousedown', function (evt) {
+  activateForms();
+  // вставляем в инпут координаты текущей точки
+  var x = evt.clientX;
+  var y = evt.clientY;
+  addressInp.value = (x + PIN_WIDTH) + ' ' + (y + PIN_HEIGHT + 22);
+});
+
+mapPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    activateForms();
+  }
+});
+
+// валидация селектов
+
+var roomNumber = adForm.querySelector('#room_number');
+var capacity = adForm.querySelector('#capacity');
+var options = capacity.querySelectorAll('option');
+
+
+var disabledOptions = function (opt) {
+  delAttr(options);
+  if (opt >= 0 && opt <= 2) {
+    options[options.length - 1].setAttribute('disabled', 'disabled');
+    for (var i = 0; i < opt; i++) {
+      options[i].setAttribute('disabled', 'disabled');
+    }
+  } else {
+    setAttr(options);
+    options[options.length - 1].removeAttribute('disabled');
+  }
+};
+
+roomNumber.addEventListener('change', function () {
+  if (roomNumber.value === '1') {
+    disabledOptions(2);
+  } else if (roomNumber.value === '2') {
+    disabledOptions(1);
+  } else if (roomNumber.value === '3') {
+    disabledOptions(0);
+  } else if (roomNumber.value === '100') {
+    disabledOptions(3);
+  }
+});
+
+
+// capacity.addEventListener('click', function () {
+//   capacity.style.background = '';
+// });
+
+// capacity.addEventListener('change', function () {
+//   console.log(capacity.value);
+//   console.log(roomNumber.value);
+//   if (roomNumber.value === '1' && capacity.value !== '1') {
+//     capacity.style.background = 'red';
+//     console.log();
+//     capacity.checkValidity();
+//     capacity.setCustomValidity('Для одной комнаты только один человек');
+//   }
+//   if (roomNumber.value === '2' && capacity.value > 2 || capacity.value === '0') {
+//     console.log('wtf');
+//     capacity.checkValidity(false);
+//     capacity.style.background = 'red';
+//     capacity.setCustomValidity('Для двух комнаты не более 2-х человек');
+//   }
+//   if (roomNumber.value === '3' && capacity.value > 3 || capacity.value === '0') {
+//     console.log('wtf2')
+
+//     capacity.checkValidity(false);
+//     capacity.style.background = 'red';
+//     capacity.setCustomValidity('Для трех комнаты не более 3-х человек');
+//   }
+//   if (roomNumber.value === '100' && capacity.value !== '0') {
+//     console.log('wtf3')
+//     capacity.checkValidity(false);
+//     capacity.style.background = 'red';
+//     capacity.setCustomValidity('АААА');
+//   }
+
+// });
+
+// capacity.addEventListener('click', function () {
+//   capacity.style.background = '';
+// });
 
