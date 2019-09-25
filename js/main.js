@@ -20,7 +20,7 @@ var getFeatures = function () {
   return newFetures;
 };
 
-var getPhotos = function (min, max) {
+var fillPhotos = function (min, max) {
   var photos = [];
   var count = randomNumber(min, max);
   for (var i = 0; i < count; i++) {
@@ -77,7 +77,7 @@ var createArray = function (quantity) {
       'checkout': checks[randomNumber(0, 2)],
       'features': getFeatures(),
       'description': 'Some description',
-      'photos': getPhotos(1, 3),
+      'photos': fillPhotos(1, 3),
     };
     obj.location = {
       x: randomNumber(0, window.innerWidth),
@@ -93,9 +93,9 @@ var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
 var mapPins = document.querySelector('.map__pins');
+var template = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var renderElement = function (array) {
-  var template = document.querySelector('#pin').content.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < array.length; i++) {
@@ -109,13 +109,13 @@ var renderElement = function (array) {
   mapPins.appendChild(fragment);
 };
 
+var templateCard = document.querySelector('#card').content.querySelector('.map__card');
 
 var renderCard = function (array) {
-  var template = document.querySelector('#card').content.querySelector('.map__card');
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < array.length; i++) {
-    var element = template.cloneNode(true);
+    var element = templateCard.cloneNode(true);
     element.querySelector('.popup__title').textContent = array[i].offer.title;
     element.querySelector('.popup__text--address').textContent = array[i].offer.address;
     element.querySelector('.popup__text--price').textContent = array[i].offer.price + '₽/ночь';
