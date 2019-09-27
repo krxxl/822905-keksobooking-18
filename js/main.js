@@ -160,36 +160,35 @@ var mapPin = document.querySelector('.map__pin--main');
 var PIN_WIDTH = mapPin.offsetWidth / 2;
 var PIN_HEIGHT = mapPin.offsetHeight / 2;
 
-// вставляем в инпут координаты точки
+// вставляем в инпут координаты начальной точки
 addressInp.value = (mapPins.offsetWidth / 2 + PIN_WIDTH) + ' ' + (mapPins.offsetHeight / 2 + PIN_HEIGHT);
 
 if (!adForm.classList.contains('ad-form--disabled')) {
   adForm.classList.add('ad-form--disabled');
 }
 
-var setAttr = function (col) {
+var setAttrDisabled = function (col) {
   for (var i = 0; i < col.length; i++) {
     col[i].setAttribute('disabled', 'disabled');
   }
 };
 
-var delAttr = function (col) {
+var delAttrDisabled = function (col) {
   for (var i = 0; i < col.length; i++) {
     col[i].removeAttribute('disabled');
   }
 };
 
-
-setAttr(fieldsetAdForm);
-setAttr(inputsMapFilters);
-setAttr(selectsMapFilters);
+setAttrDisabled(fieldsetAdForm);
+setAttrDisabled(inputsMapFilters);
+setAttrDisabled(selectsMapFilters);
 
 var activateForms = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  delAttr(fieldsetAdForm);
-  delAttr(inputsMapFilters);
-  delAttr(selectsMapFilters);
+  delAttrDisabled(fieldsetAdForm);
+  delAttrDisabled(inputsMapFilters);
+  delAttrDisabled(selectsMapFilters);
 };
 
 mapPin.addEventListener('mousedown', function (evt) {
@@ -214,67 +213,37 @@ var options = capacity.querySelectorAll('option');
 
 
 var disabledOptions = function (opt) {
-  delAttr(options);
+  // удаляем атрибуты у всех option количества людей
+  delAttrDisabled(options);
+  // если выбраны количество комнат от 1 - 3
   if (opt >= 0 && opt <= 2) {
+    // дизаблим последний пункт
     options[options.length - 1].setAttribute('disabled', 'disabled');
+    // дизаблим не нужнаые
     for (var i = 0; i < opt; i++) {
       options[i].setAttribute('disabled', 'disabled');
     }
   } else {
-    setAttr(options);
+    // если выбрано 100 комнат дизаблим все кроме последнего пункта
+    setAttrDisabled(options);
     options[options.length - 1].removeAttribute('disabled');
   }
 };
 
 roomNumber.addEventListener('change', function () {
-  if (roomNumber.value === '1') {
-    disabledOptions(2);
-  } else if (roomNumber.value === '2') {
-    disabledOptions(1);
-  } else if (roomNumber.value === '3') {
-    disabledOptions(0);
-  } else if (roomNumber.value === '100') {
-    disabledOptions(3);
+  switch (roomNumber.value) {
+    case '1':
+      disabledOptions(2);
+      break;
+    case '2':
+      disabledOptions(1);
+      break;
+    case '3':
+      disabledOptions(0);
+      break;
+    case '100':
+      disabledOptions(3);
+      break;
   }
 });
-
-
-// capacity.addEventListener('click', function () {
-//   capacity.style.background = '';
-// });
-
-// capacity.addEventListener('change', function () {
-//   console.log(capacity.value);
-//   console.log(roomNumber.value);
-//   if (roomNumber.value === '1' && capacity.value !== '1') {
-//     capacity.style.background = 'red';
-//     console.log();
-//     capacity.checkValidity();
-//     capacity.setCustomValidity('Для одной комнаты только один человек');
-//   }
-//   if (roomNumber.value === '2' && capacity.value > 2 || capacity.value === '0') {
-//     console.log('wtf');
-//     capacity.checkValidity(false);
-//     capacity.style.background = 'red';
-//     capacity.setCustomValidity('Для двух комнаты не более 2-х человек');
-//   }
-//   if (roomNumber.value === '3' && capacity.value > 3 || capacity.value === '0') {
-//     console.log('wtf2')
-
-//     capacity.checkValidity(false);
-//     capacity.style.background = 'red';
-//     capacity.setCustomValidity('Для трех комнаты не более 3-х человек');
-//   }
-//   if (roomNumber.value === '100' && capacity.value !== '0') {
-//     console.log('wtf3')
-//     capacity.checkValidity(false);
-//     capacity.style.background = 'red';
-//     capacity.setCustomValidity('АААА');
-//   }
-
-// });
-
-// capacity.addEventListener('click', function () {
-//   capacity.style.background = '';
-// });
 
