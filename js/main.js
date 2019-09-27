@@ -179,6 +179,14 @@ var delAttrDisabled = function (col) {
   }
 };
 
+var setCoord = function () {
+  var x = mapPin.getBoundingClientRect().x;
+  var y = mapPin.getBoundingClientRect().y;
+  // var x = evt.clientX;
+  // var y = evt.clientY;
+  addressInp.value = (x + PIN_WIDTH) + ' ' + (y + PIN_HEIGHT + 22);
+};
+
 setAttrDisabled(fieldsetAdForm);
 setAttrDisabled(inputsMapFilters);
 setAttrDisabled(selectsMapFilters);
@@ -191,12 +199,10 @@ var activateForms = function () {
   delAttrDisabled(selectsMapFilters);
 };
 
-mapPin.addEventListener('mousedown', function (evt) {
+mapPin.addEventListener('mousedown', function () {
   activateForms();
   // вставляем в инпут координаты текущей точки
-  var x = evt.clientX;
-  var y = evt.clientY;
-  addressInp.value = (x + PIN_WIDTH) + ' ' + (y + PIN_HEIGHT + 22);
+  setCoord();
 });
 
 mapPin.addEventListener('keydown', function (evt) {
@@ -211,6 +217,7 @@ var roomNumber = adForm.querySelector('#room_number');
 var capacity = adForm.querySelector('#capacity');
 var options = capacity.querySelectorAll('option');
 
+capacity.setCustomValidity('Заполните верно количество людей');
 
 var disabledOptions = function (opt) {
   // удаляем атрибуты у всех option количества людей
@@ -219,7 +226,7 @@ var disabledOptions = function (opt) {
   if (opt >= 0 && opt <= 2) {
     // дизаблим последний пункт
     options[options.length - 1].setAttribute('disabled', 'disabled');
-    // дизаблим не нужнаые
+    // дизаблим не нужные
     for (var i = 0; i < opt; i++) {
       options[i].setAttribute('disabled', 'disabled');
     }
@@ -246,4 +253,3 @@ roomNumber.addEventListener('change', function () {
       break;
   }
 });
-
