@@ -30,16 +30,22 @@ var getPhotos = function (min, max) {
 };
 
 var translateType = function (type) {
+  var translateName;
   switch (type) {
     case 'palace':
-      return 'Дворец';
+      translateName = 'Дворец';
+      break;
     case 'flat':
-      return 'Квартира';
+      translateName = 'Квартира';
+      break;
     case 'house':
-      return 'Дом';
+      translateName = 'Дом';
+      break;
     case 'bungalo':
-      return 'Бунгало';
+      translateName = 'Бунгало';
+      break;
   }
+  return translateName;
 };
 
 var renderFeatures = function (featuresBlock, templateFeature, curFeatures) {
@@ -226,9 +232,17 @@ var roomNumber = adForm.querySelector('#room_number');
 var capacity = adForm.querySelector('#capacity');
 var options = capacity.querySelectorAll('option');
 
+var setMessage = function () {
+  if (options[capacity.selectedIndex].hasAttribute('disabled')) {
+    capacity.setCustomValidity('Заполните верно количество людей');
+  }
+};
+
 var disabledOptions = function (opt) {
   // удаляем атрибуты у всех option количества людей
   delAttrDisabled(options);
+  // отчищаем сообщение
+  capacity.setCustomValidity('');
   // если выбраны количество комнат от 1 - 3
   if (opt >= 0 && opt <= 2) {
     // дизаблим последний пункт
@@ -241,10 +255,14 @@ var disabledOptions = function (opt) {
     // если выбрано 100 комнат дизаблим все кроме последнего пункта
     setAttrDisabled(options);
     options[options.length - 1].removeAttribute('disabled');
-  } else {
-    capacity.setCustomValidity('Заполните верно количество людей');
   }
+  // устанавливаем сообщение
+  setMessage();
 };
+
+capacity.addEventListener('change', function () {
+  capacity.setCustomValidity('');
+});
 
 roomNumber.addEventListener('change', function () {
   switch (roomNumber.value) {
