@@ -2,7 +2,6 @@
 
 (function () {
   // для проверки нажатия Пина
-
   var isActive = false;
 
   var addEvents = function (node, events, callback) {
@@ -24,30 +23,67 @@
     if (!isActive) {
       window.activateForms();
       // вставляем в инпут координаты текущей точки
-      window.setCoord();
+      // window.setCoord();
       isActive = true;
     }
   };
 
+  var onMainPinMove = function (evt) {
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var dragged = false;
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      dragged = true;
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var curCoordX = window.bookingData.mainPin.offsetLeft - shift.x;
+      var curCoordY = window.bookingData.mainPin.offsetTop - shift.y;
+
+      if (curCoordX >= 0 && curCoordX <= (1200 - 65) && curCoordY >= 130 && curCoordY <= 630) {
+
+        window.bookingData.mainPin.style.top = curCoordY + 'px';
+        window.bookingData.mainPin.style.left = curCoordX + 'px';
+
+        window.setCoord();
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      window.setCoord();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        var onClickPreventDefault = function (dragEvt) {
+          dragEvt.preventDefault();
+          window.bookingData.mainPin.removeEventListener('click', onClickPreventDefault);
+        };
+        window.bookingData.mainPin.addEventListener('click', onClickPreventDefault);
+      }
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
   addEvents(window.bookingData.mainPin, ['mousedown', 'keydown'], onMainPin);
 
-  // window.bookingData.mainPin.addEventListener('mousedown', function () {
-  //   if (!isActive) {
-  //     window.activateForms();
-  //     // вставляем в инпут координаты текущей точки
-  //     window.setCoord();
-  //     isActive = true;
-  //   }
-  // });
-
-  // window.bookingData.mainPin.addEventListener('keydown', function (evt) {
-  //   if (evt.keyCode === 13 && !isActive) {
-  //     window.activateForms();
-  //     // вставляем в инпут координаты текущей точки
-  //     window.setCoord();
-  //     isActive = true;
-  //   }
-  // });
+  // вешаем обрабочик события
+  window.bookingData.mainPin.addEventListener('mousedown', onMainPinMove);
 
   // // вызов карточек
   var closePopup = function () {
@@ -65,22 +101,6 @@
       setEventClose();
     };
     addEvents(pin, ['mousedown', 'keydown'], pinCallback);
-    // pin.addEventListener('keydown', function (evt) {
-    //   if (evt.keyCode === 13) {
-    //     evt.preventDefault();
-    //     closePopup();
-    //     window.renderCard(window.bookingData.arr[idx]);
-    //     // вешаем события на крестик
-    //     setEventClose();
-    //   }
-    // });
-    // pin.addEventListener('click', function () {
-    //   closePopup();
-    //   window.renderCard(window.bookingData.arr[idx]);
-    //   // вешаем события на крестик
-    //   setEventClose();
-    // });
-
   };
 
   window.setEventPin = function () {
