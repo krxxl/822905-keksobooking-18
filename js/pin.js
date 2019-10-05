@@ -31,6 +31,7 @@
       document.querySelector('.error').remove();
       btnError.removeEventListener('click', onBtnErrorClick);
       window.deactivateForms();
+      window.isActive = false;
     };
     var btnError = document.querySelector('.error__button');
     btnError.addEventListener('click', onBtnErrorClick);

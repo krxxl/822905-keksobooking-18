@@ -2,7 +2,7 @@
 
 (function () {
   // для проверки нажатия Пина
-  var isActive = false;
+  window.isActive = false;
 
   var addEvents = function (node, events, callback) {
     events.forEach(function (event) {
