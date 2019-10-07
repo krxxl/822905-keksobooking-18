@@ -19,11 +19,12 @@
     window.bookingData.mapPins.appendChild(fragment);
   };
 
-  window.successHandler = function (pins) {
+  window.onSuccess = function (pins) {
     renderElement(pins);
+    window.setEventPin(pins);
   };
 
-  window.errorHandler = function () {
+  window.onError = function () {
     var error = templateError.cloneNode(true);
     document.querySelector('body').prepend(error);
 

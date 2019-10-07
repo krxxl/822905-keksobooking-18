@@ -49,8 +49,8 @@
     window.delAttrDisabled(selectsMapFilters);
     // add pins and events on it
     // window.renderElement(window.bookingData.arr); //////////////////////////////////////////////////
-    window.backend.load(window.successHandler, window.errorHandler);
-    window.setEventPin();
+    window.backend.load(window.onSuccess, window.onError);
+    // window.setEventPin();
   };
 
 

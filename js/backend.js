@@ -3,7 +3,7 @@
 (function () {
   window.backend = {
     load: function (onLoad, onError) {
-      var url = 'https://js.dump.academy/keksobooking/data1';
+      var url = 'https://js.dump.academy/keksobooking/data';
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
