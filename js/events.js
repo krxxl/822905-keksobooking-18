@@ -2,7 +2,7 @@
 
 (function () {
   // для проверки нажатия Пина
-  var isActive = false;
+  window.isActive = false;
 
   var addEvents = function (node, events, callback) {
     events.forEach(function (event) {
@@ -20,11 +20,11 @@
   };
 
   var onMainPin = function () {
-    if (!isActive) {
+    if (!window.isActive) {
       window.activateForms();
       // вставляем в инпут координаты текущей точки
       // window.setCoord();
-      isActive = true;
+      window.isActive = true;
     }
   };
 
@@ -93,21 +93,21 @@
     }
   };
 
-  var onPinClick = function (pin, idx) {
+  var onPinClick = function (pin, elem) {
     var pinCallback = function () {
       closePopup();
-      window.renderCard(window.bookingData.arr[idx]);
+      window.renderCard(elem);
       // вешаем события на крестик
       setEventClose();
     };
     addEvents(pin, ['mousedown', 'keydown'], pinCallback);
   };
 
-  window.setEventPin = function () {
+  window.setEventPin = function (arr) {
     var pins = document.querySelectorAll('.map__pin');
 
     for (var i = 1; i < pins.length; i++) {
-      onPinClick(pins[i], i - 1);
+      onPinClick(pins[i], arr[i - 1]);
     }
   };
 

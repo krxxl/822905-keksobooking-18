@@ -44,7 +44,7 @@
     var curPhotos = elem.offer.photos;
     photosBlock.innerHTML = '';
     renderPhotos(photosBlock, templatePhoto, curPhotos);
-    element.querySelector('.popup__avatar').src = elem.autor.avatar;
+    element.querySelector('.popup__avatar').src = elem.author.avatar;
 
     fragment.appendChild(element);
     window.bookingData.mapPins.appendChild(fragment);
