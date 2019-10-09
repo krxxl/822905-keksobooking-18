@@ -110,5 +110,47 @@
     synchronizeTime(timeOut, timeIn);
   });
 
+  var removePins = function (pins) {
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  };
+
+  window.prepareForm = function () {
+    var pins = document.querySelectorAll('.map__pin--rendered');
+    removePins(pins);
+    window.closePopup();
+    form.reset();
+    window.bookingData.mainPin.style.top = '375px';
+    window.bookingData.mainPin.style.left = '570px';
+    window.firstPosition();
+  };
+
+  var form = document.querySelector('.ad-form');
+  var templateSucces = document.querySelector('#success').content.querySelector('.success');
+
+  var onSubmitSucces = function () {
+    window.deactivateForms();
+
+    window.prepareForm();
+
+    var succes = templateSucces.cloneNode(true);
+    window.bookingData.main.prepend(succes);
+
+    var succesElem = window.bookingData.main.querySelector('.success');
+
+    var removeSucces = function () {
+      succesElem.remove();
+    };
+
+    window.addEvents(document, ['keydown', 'click'], removeSucces);
+
+    window.isActive = false;
+  };
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), onSubmitSucces, window.onError);
+  });
 
 })();

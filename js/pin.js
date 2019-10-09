@@ -19,7 +19,7 @@
     window.bookingData.mapPins.appendChild(fragment);
   };
 
-  window.onSuccess = function (pins) {
+  window.onSucces = function (pins) {
     renderElement(pins);
     window.setEventPin(pins);
   };
@@ -32,10 +32,12 @@
       document.querySelector('.error').remove();
       btnError.removeEventListener('click', onBtnErrorClick);
       window.deactivateForms();
+      window.prepareForm();
       window.isActive = false;
     };
     var btnError = document.querySelector('.error__button');
     btnError.addEventListener('click', onBtnErrorClick);
+    window.addEvents(document, ['click', 'keydown'], onBtnErrorClick);
   };
 
 })();
