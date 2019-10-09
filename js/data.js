@@ -5,6 +5,7 @@
   var mapPins = document.querySelector('.map__pins');
   var adForm = document.querySelector('.ad-form');
   var mapPin = document.querySelector('.map__pin--main');
+  var main = document.querySelector('main');
 
   window.bookingData = {
     arr: [],
@@ -29,6 +30,7 @@
     mapPins: mapPins,
     adForm: adForm,
     mainPin: mapPin,
+    main: main,
   };
 
   var types = ['palace', 'flat', 'house', 'bungalo'];

@@ -4,11 +4,14 @@
   // для проверки нажатия Пина
   window.isActive = false;
 
-  var addEvents = function (node, events, callback) {
+  window.addEvents = function (node, events, callback) {
     events.forEach(function (event) {
       if (event === 'keydown') {
         node.addEventListener(event, function (evt) {
           if (evt.keyCode === 13) {
+            evt.preventDefault();
+            callback();
+          } else if (evt.keyCode === 27) {
             evt.preventDefault();
             callback();
           }
@@ -80,13 +83,13 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  addEvents(window.bookingData.mainPin, ['mousedown', 'keydown'], onMainPin);
+  window.addEvents(window.bookingData.mainPin, ['mousedown', 'keydown'], onMainPin);
 
   // вешаем обрабочик события
   window.bookingData.mainPin.addEventListener('mousedown', onMainPinMove);
 
   // // вызов карточек
-  var closePopup = function () {
+  window.closePopup = function () {
     var cardPopup = document.querySelector('.map__card.popup');
     if (cardPopup) {
       cardPopup.remove();
@@ -95,19 +98,19 @@
 
   var onPinClick = function (pin, elem) {
     var pinCallback = function () {
-      closePopup();
+      window.closePopup();
       window.renderCard(elem);
       // вешаем события на крестик
       setEventClose();
     };
-    addEvents(pin, ['mousedown', 'keydown'], pinCallback);
+    window.addEvents(pin, ['mousedown', 'keydown'], pinCallback);
   };
 
   window.setEventPin = function (arr) {
-    var pins = document.querySelectorAll('.map__pin');
+    var pins = document.querySelectorAll('.map__pin--rendered');
 
-    for (var i = 1; i < pins.length; i++) {
-      onPinClick(pins[i], arr[i - 1]);
+    for (var i = 0; i < pins.length; i++) {
+      onPinClick(pins[i], arr[i]);
     }
   };
 
@@ -116,11 +119,11 @@
     var popupClose = document.querySelector('.popup__close');
 
     popupClose.addEventListener('click', function () {
-      closePopup();
+      window.closePopup();
     });
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === 27) {
-        closePopup();
+        window.closePopup();
       }
     });
   };

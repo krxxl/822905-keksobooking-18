@@ -9,13 +9,15 @@
   var inputsMapFilters = mapFilters.querySelectorAll('input');
   var selectsMapFilters = mapFilters.querySelectorAll('select');
   var addressInp = window.bookingData.adForm.querySelector('#address');
-
   var PIN_WIDTH = window.bookingData.mainPin.offsetWidth / 2;
   var PIN_HEIGHT = window.bookingData.mainPin.offsetHeight;
 
   // вставляем в инпут координаты начальной точки
-  addressInp.value = (window.bookingData.mapPins.offsetWidth / 2 + PIN_WIDTH) + ' ' + (window.bookingData.mapPins.offsetHeight / 2 + PIN_HEIGHT);
+  window.firstPosition = function () {
+    addressInp.value = (window.bookingData.mapPins.offsetWidth / 2 + PIN_WIDTH) + ' ' + (window.bookingData.mapPins.offsetHeight / 2 + PIN_HEIGHT);
+  };
 
+  window.firstPosition();
   // отключаем инпуты и селекторы и проверяем классы
 
   window.deactivateForms = function () {
@@ -49,7 +51,7 @@
     window.delAttrDisabled(selectsMapFilters);
     // add pins and events on it
     // window.renderElement(window.bookingData.arr); //////////////////////////////////////////////////
-    window.backend.load(window.onSuccess, window.onError);
+    window.backend.load(window.onSucces, window.onError);
     // window.setEventPin();
   };
 
