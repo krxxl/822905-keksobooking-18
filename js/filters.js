@@ -17,52 +17,49 @@
 
   var filterByType = function (pin) {
     if (typeApp === 'any') {
-      return pin;
+      return true;
     }
     return pin.offer.type === typeApp;
   };
 
   var filterByPrice = function (pin) {
-    if (priceApp === 'any') {
-      return pin;
-    } else if (priceApp === 'low') {
+    if (priceApp === 'low') {
       return pin.offer.price < 10000;
     } else if (priceApp === 'high') {
       return pin.offer.price > 50000;
     } else if (priceApp === 'middle') {
       return pin.offer.price >= 10000 && pin.offer.price <= 50000;
     }
+    return true;
   };
 
   var filterByRooms = function (pin) {
-    if (roomsApp === 'any') {
-      return pin;
-    } else if (+roomsApp === 1) {
+    if (+roomsApp === 1) {
       return pin.offer.rooms === +roomsApp;
     } else if (+roomsApp === 2) {
       return pin.offer.rooms === +roomsApp;
     } else if (+roomsApp === 3) {
       return pin.offer.rooms === +roomsApp;
     }
+    return true;
   };
 
   var filterByQuest = function (pin) {
-    if (guestsApp === 'any') {
-      return pin;
-    } else if (+guestsApp === 2) {
+    if (+guestsApp === 2) {
       return pin.offer.guests === +guestsApp;
     } else if (+guestsApp === 1) {
       return pin.offer.guests === +guestsApp;
     } else if (+guestsApp === 0) {
       return false;
     }
+    return true;
   };
 
   var filterByFeature = function (pin, feature) {
     if (feature.checked) {
       return pin.offer.features.includes(feature.value);
     } else {
-      return pin;
+      return true;
     }
   };
 
@@ -128,6 +125,7 @@
   var onfilterChange = function () {
     removePins();
     window.updatePins();
+    window.closePopup();
   };
 
   type.addEventListener('change', function () {
