@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+
+  var MAX_QUANTITY = 5;
   var form = document.querySelector('.map__filters');
   var type = form.querySelector('#housing-type');
   var price = form.querySelector('#housing-price');
@@ -14,65 +16,56 @@
   var elevator = features.querySelector('#filter-elevator');
   var conditioner = features.querySelector('#filter-conditioner');
   var templateError = document.querySelector('#error').content.querySelector('.error');
+  var typeApp = type.options[type.selectedIndex].value;
+  var priceApp = price.options[price.selectedIndex].value;
+  var roomsApp = rooms.options[rooms.selectedIndex].value;
+  var guestsApp = guests.options[guests.selectedIndex].value;
 
   var filterByType = function (pin) {
     if (typeApp === 'any') {
-      isAny = true;
       return true;
     }
-    isAny = false;
     return pin.offer.type === typeApp;
   };
 
   var filterByPrice = function (pin) {
     switch (priceApp) {
       case 'low':
-        isAny = false;
         return pin.offer.price < 10000;
       case 'high':
-        isAny = false;
         return pin.offer.price > 50000;
       case 'middle':
-        isAny = false;
         return pin.offer.price >= 10000 && pin.offer.price <= 50000;
       default:
-        isAny = true;
         return true;
     }
   };
 
   var filterByRooms = function (pin) {
     if (roomsApp === 'any') {
-      isAny = true;
       return true;
     }
-    isAny = false;
     return pin.offer.rooms === +roomsApp;
   };
 
   var filterByQuest = function (pin) {
     if (guestsApp === 'any') {
-      isAny = true;
       return true;
     }
-    isAny = false;
     return pin.offer.guests === +guestsApp;
   };
 
   var filterByFeature = function (pin, feature) {
     if (feature.checked) {
-      isAny = false;
       return pin.offer.features.includes(feature.value);
     }
-    isAny = true;
     return true;
   };
 
-  var isAny = true;
 
   var getFilteredPins = function () {
     var filteredPins = pins.filter(function (pin) {
-      return filterByType(pin, isAny)
+      return filterByType(pin)
               && filterByPrice(pin)
               && filterByRooms(pin)
               && filterByQuest(pin)
@@ -84,8 +77,8 @@
               && filterByFeature(pin, conditioner);
     });
 
-    if (!isAny && filteredPins.length > 5) {
-      filteredPins.length = 5;
+    if (filteredPins.length > MAX_QUANTITY) {
+      filteredPins.length = MAX_QUANTITY;
     }
     return filteredPins;
   };
@@ -99,7 +92,6 @@
   window.onSucces = function (data) {
     pins = data;
     window.updatePins();
-    // window.renderElement(pins);
   };
 
   window.onError = function () {
@@ -124,11 +116,6 @@
       pin.remove();
     });
   };
-
-  var typeApp = 'any';
-  var priceApp = 'any';
-  var roomsApp = 'any';
-  var guestsApp = 'any';
 
   var onFilterChange = function () {
     removePins();
@@ -158,16 +145,5 @@
   washer.addEventListener('change', onFilterChange);
   elevator.addEventListener('change', onFilterChange);
   conditioner.addEventListener('change', onFilterChange);
-
-  // type.addEventListener('change', onTypeChange);
-  // price.addEventListener('change', onPriceChange);
-  // rooms.addEventListener('change', onRoomsChange);
-  // guests.addEventListener('change', onQuestsChange);
-  // wifi.addEventListener('change', onWifiChange);
-  // dishwasher.addEventListener('change', onDishwasherChange);
-  // parking.addEventListener('change', onParkingChange);
-  // washer.addEventListener('change', onWasherChange);
-  // elevator.addEventListener('change', onElevatorChange);
-  // conditioner.addEventListener('change', onConditionerChange);
 })();
 
