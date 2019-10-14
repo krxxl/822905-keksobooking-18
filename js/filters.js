@@ -17,55 +17,62 @@
 
   var filterByType = function (pin) {
     if (typeApp === 'any') {
+      isAny = true;
       return true;
     }
+    isAny = false;
     return pin.offer.type === typeApp;
   };
 
   var filterByPrice = function (pin) {
-    if (priceApp === 'low') {
-      return pin.offer.price < 10000;
-    } else if (priceApp === 'high') {
-      return pin.offer.price > 50000;
-    } else if (priceApp === 'middle') {
-      return pin.offer.price >= 10000 && pin.offer.price <= 50000;
+    switch (priceApp) {
+      case 'low':
+        isAny = false;
+        return pin.offer.price < 10000;
+      case 'high':
+        isAny = false;
+        return pin.offer.price > 50000;
+      case 'middle':
+        isAny = false;
+        return pin.offer.price >= 10000 && pin.offer.price <= 50000;
+      default:
+        isAny = true;
+        return true;
     }
-    return true;
   };
 
   var filterByRooms = function (pin) {
-    if (+roomsApp === 1) {
-      return pin.offer.rooms === +roomsApp;
-    } else if (+roomsApp === 2) {
-      return pin.offer.rooms === +roomsApp;
-    } else if (+roomsApp === 3) {
-      return pin.offer.rooms === +roomsApp;
+    if (roomsApp === 'any') {
+      isAny = true;
+      return true;
     }
-    return true;
+    isAny = false;
+    return pin.offer.rooms === +roomsApp;
   };
 
   var filterByQuest = function (pin) {
-    if (+guestsApp === 2) {
-      return pin.offer.guests === +guestsApp;
-    } else if (+guestsApp === 1) {
-      return pin.offer.guests === +guestsApp;
-    } else if (+guestsApp === 0) {
-      return false;
+    if (guestsApp === 'any') {
+      isAny = true;
+      return true;
     }
-    return true;
+    isAny = false;
+    return pin.offer.guests === +guestsApp;
   };
 
   var filterByFeature = function (pin, feature) {
     if (feature.checked) {
+      isAny = false;
       return pin.offer.features.includes(feature.value);
-    } else {
-      return true;
     }
+    isAny = true;
+    return true;
   };
 
-  var filteredPins = function () {
-    var filter = pins.filter(function (pin) {
-      return filterByType(pin)
+  var isAny = true;
+
+  var getFilteredPins = function () {
+    var filteredPins = pins.filter(function (pin) {
+      return filterByType(pin, isAny)
               && filterByPrice(pin)
               && filterByRooms(pin)
               && filterByQuest(pin)
@@ -77,21 +84,22 @@
               && filterByFeature(pin, conditioner);
     });
 
-    if (filter.length > 5) {
-      filter.length = 5;
+    if (!isAny && filteredPins.length > 5) {
+      filteredPins.length = 5;
     }
-    return filter;
+    return filteredPins;
   };
 
   window.updatePins = function () {
-    window.renderElement(filteredPins());
+    window.renderElement(getFilteredPins());
   };
 
   var pins = [];
 
   window.onSucces = function (data) {
     pins = data;
-    window.renderElement(pins);
+    window.updatePins();
+    // window.renderElement(pins);
   };
 
   window.onError = function () {
@@ -122,7 +130,7 @@
   var roomsApp = 'any';
   var guestsApp = 'any';
 
-  var onfilterChange = function () {
+  var onFilterChange = function () {
     removePins();
     window.updatePins();
     window.closePopup();
@@ -130,38 +138,26 @@
 
   type.addEventListener('change', function () {
     typeApp = type.options[type.selectedIndex].value;
-    onfilterChange();
+    onFilterChange();
   });
   price.addEventListener('change', function () {
     priceApp = price.options[price.selectedIndex].value;
-    onfilterChange();
+    onFilterChange();
   });
   rooms.addEventListener('change', function () {
     roomsApp = rooms.options[rooms.selectedIndex].value;
-    onfilterChange();
+    onFilterChange();
   });
   guests.addEventListener('change', function () {
     guestsApp = guests.options[guests.selectedIndex].value;
-    onfilterChange();
+    onFilterChange();
   });
-  wifi.addEventListener('change', function () {
-    onfilterChange();
-  });
-  dishwasher.addEventListener('change', function () {
-    onfilterChange();
-  });
-  parking.addEventListener('change', function () {
-    onfilterChange();
-  });
-  washer.addEventListener('change', function () {
-    onfilterChange();
-  });
-  elevator.addEventListener('change', function () {
-    onfilterChange();
-  });
-  conditioner.addEventListener('change', function () {
-    onfilterChange();
-  });
+  wifi.addEventListener('change', onFilterChange);
+  dishwasher.addEventListener('change', onFilterChange);
+  parking.addEventListener('change', onFilterChange);
+  washer.addEventListener('change', onFilterChange);
+  elevator.addEventListener('change', onFilterChange);
+  conditioner.addEventListener('change', onFilterChange);
 
   // type.addEventListener('change', onTypeChange);
   // price.addEventListener('change', onPriceChange);
