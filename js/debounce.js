@@ -2,7 +2,6 @@
 
 (function () {
   var DEBOUNCE_INTERVAL = 500;
-  console.log('asdf')
   window.debounce = function (cb) {
     var lastTimeout = null;
 
