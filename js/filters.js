@@ -117,11 +117,11 @@
     });
   };
 
-  var onFilterChange = function () {
+  var onFilterChange = window.debounce(function () {
     removePins();
     window.updatePins();
     window.closePopup();
-  };
+  });
 
   type.addEventListener('change', function () {
     typeApp = type.options[type.selectedIndex].value;
