@@ -25,8 +25,6 @@
   var onMainPin = function () {
     if (!window.isActive) {
       window.activateForms();
-      // вставляем в инпут координаты текущей точки
-      // window.setCoord();
       window.isActive = true;
     }
   };
@@ -54,8 +52,12 @@
 
       var curCoordX = window.bookingData.mainPin.offsetLeft - shift.x;
       var curCoordY = window.bookingData.mainPin.offsetTop - shift.y;
+      var mapWidth = document.querySelector('.map').offsetWidth;
+      var PIN_WIDTH = window.bookingData.mainPin.offsetWidth / 2;
+      var minMapHeigth = 130;
+      var maxMapHeigth = 630;
 
-      if (curCoordX >= 0 && curCoordX <= (1200 - 65) && curCoordY >= 130 && curCoordY <= 630) {
+      if (curCoordX >= (0 - PIN_WIDTH) && curCoordX <= (mapWidth - PIN_WIDTH) && curCoordY >= minMapHeigth && curCoordY <= maxMapHeigth) {
 
         window.bookingData.mainPin.style.top = curCoordY + 'px';
         window.bookingData.mainPin.style.left = curCoordX + 'px';

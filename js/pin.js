@@ -5,7 +5,6 @@
   var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
 
   window.renderElement = function (array) {
-    // console.log(array)
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < array.length; i++) {

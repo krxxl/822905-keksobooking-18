@@ -11,6 +11,7 @@
   var addressInp = window.bookingData.adForm.querySelector('#address');
   var PIN_WIDTH = window.bookingData.mainPin.offsetWidth / 2;
   var PIN_HEIGHT = window.bookingData.mainPin.offsetHeight;
+  var PIN_ARROW = 22;
 
   // вставляем в инпут координаты начальной точки
   window.firstPosition = function () {
@@ -40,7 +41,7 @@
   window.setCoord = function () {
     var x = window.bookingData.mainPin.offsetLeft;
     var y = window.bookingData.mainPin.offsetTop;
-    addressInp.value = (x + PIN_WIDTH) + ' ' + (y + PIN_HEIGHT + 22);
+    addressInp.value = (x + PIN_WIDTH) + ' ' + (y + PIN_HEIGHT + PIN_ARROW);
   };
 
   window.activateForms = function () {
